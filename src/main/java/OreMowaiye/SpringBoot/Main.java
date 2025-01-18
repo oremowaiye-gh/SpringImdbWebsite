@@ -22,11 +22,9 @@ public class Main {
         SpringApplication.run(Main.class, args);
 
     }
-@Transactional
+    @Transactional
     public void readAndSaveData() {
-
-
-        try (Reader reader = new FileReader("src/main/resources/title.akas (1).tsv")) {
+        try (Reader reader = new FileReader("src/main/resources/title.clean.tsv")) {
             Iterable<CSVRecord> records = CSVFormat.TDF
                     .withFirstRecordAsHeader()
                     .parse(reader);
@@ -34,50 +32,53 @@ public class Main {
             int savedRows = 0;
 
             for (CSVRecord record : records) {
-
                 String titleId = record.get("titleId");
                 String title = record.get("title");
-
-
-                if ((title == null || title.isEmpty()) && (titleId == null || titleId.isEmpty())) {
-                    System.out.println("Skipping row with missing title and titleId: " + record);
+                if (title == null || title.isEmpty() || title.length() <= 1 || title.equals("N/A")) {
+                    System.out.println("Skipping row with empty title or too short title: " + record);
                     continue;
                 }
-                int ordering = Integer.parseInt(record.get("ordering"));
+
+                if (titleId == null || titleId.isEmpty()) {
+                    System.out.println("Skipping row with missing titleId: " + record);
+                    continue;
+                }
+
+                if (title.length() > 255) {
+                    title = title.substring(0, 255);
+                }
+
+
+                String orderingStr = record.get("ordering");
+                int ordering = "N/A".equalsIgnoreCase(orderingStr) ? 0 : Integer.parseInt(orderingStr);
 
                 String region = record.get("region");
                 String language = record.get("language");
                 String types = record.get("types");
                 String attributes = record.get("attributes");
-                boolean isOriginalTitle = "1".equals(record.get("isOriginalTitle"));  // 1 means true, 0 means false
-
-
-
+                boolean isOriginalTitle = "1".equals(record.get("isOriginalTitle"));
 
                 FilmTitles filmTitle = new FilmTitles(
-                            titleId,
-                            ordering,
-                            title,
-                            region,
-                            language,
-                            types,
-                            attributes,
-                            isOriginalTitle
+                        titleId,
+                        ordering,
+                        title,
+                        region,
+                        language,
+                        types,
+                        attributes,
+                        isOriginalTitle
                 );
 
                 titleRepository.save(filmTitle);
                 savedRows++;
                 System.out.println("Saved FilmTitle: " + title);
-
-                if (savedRows >= 100) {
-                    break;
-                }
             }
 
-            System.out.println("Saved " + savedRows + " rows.");
 
+            System.out.println("Saved " + savedRows + " rows.");
         } catch (IOException e) {
             System.err.println("Error reading the file: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.err.println("Error parsing ordering field: " + e.getMessage());
         }
-    }
-}
+    }}
