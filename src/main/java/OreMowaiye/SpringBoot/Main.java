@@ -31,7 +31,7 @@ public class Main {
                     .withFirstRecordAsHeader()
                     .parse(reader);
 
-            int processedRows = 0;
+            int savedRows = 0;
 
             for (CSVRecord record : records) {
 
@@ -66,18 +66,15 @@ public class Main {
                 );
 
                 titleRepository.save(filmTitle);
-                processedRows++;
+                savedRows++;
                 System.out.println("Saved FilmTitle: " + title);
 
-
-
-
-                if (processedRows >= 100) {
+                if (savedRows >= 100) {
                     break;
                 }
             }
 
-            System.out.println("Processed " + processedRows + " rows.");
+            System.out.println("Saved " + savedRows + " rows.");
 
         } catch (IOException e) {
             System.err.println("Error reading the file: " + e.getMessage());
