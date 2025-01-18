@@ -6,12 +6,14 @@ import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 public class Main {
@@ -19,30 +21,38 @@ public class Main {
     @Autowired
     private TitleRepository titleRepository;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
-
     }
 
     @Transactional
     public void readAndSaveData() {
+        int recordLimit = 3000000; //6000000
+        int processedCount = 0;
+
         try (Reader reader = new FileReader("src/main/resources/title.clean.tsv");
              CSVParser csvParser = new CSVParser(reader, CSVFormat.MONGODB_TSV
                      .withFirstRecordAsHeader()
                      .withQuote(null)
                      .withEscape('\\'))) {
 
-            int savedRows = 0;
-
+            List<FilmTitles> filmTitlesList = new ArrayList<>();
             for (CSVRecord record : csvParser) {
+                if (processedCount >= recordLimit) {
+                    break;
+                }
+
                 if (record.size() < 8) {
-                    System.out.println("Skipping row with wrong number of  columns: " + record);
+                    System.out.println("Skipping row with wrong number of columns: " + record);
                     continue;
                 }
                 String titleId = record.get("titleId");
                 String title = record.get("title");
                 if (title == null || title.contains("\"") || title.length() <= 1 || title.equals("N/A")) {
-                    System.out.println("Skipping row with empty title, too short title, or title containing double quotes: " + record);
+                    System.out.println("Skipping row with empty title, too short title: " + record);
                     continue;
                 }
 
@@ -75,12 +85,12 @@ public class Main {
                         isOriginalTitle
                 );
 
-                titleRepository.save(filmTitle);
-                savedRows++;
-                System.out.println("Saved FilmTitle: " + title);
+                filmTitlesList.add(filmTitle);
+                processedCount++;
             }
 
-            System.out.println("Saved " + savedRows + " rows.");
+            batchInsert(filmTitlesList);
+            System.out.println("Saved " + filmTitlesList.size() + " rows.");
         } catch (IOException e) {
             System.err.println("Error reading the file: " + e.getMessage());
         } catch (NumberFormatException e) {
@@ -88,4 +98,18 @@ public class Main {
         }
     }
 
+    @Transactional
+    public void batchInsert(List<FilmTitles> filmTitlesList) {
+        String sql = "INSERT INTO film_titles (title_id, ordering, title, region, language, types, attributes, is_original_title) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.batchUpdate(sql, filmTitlesList, 1000, (ps, filmTitle) -> {
+            ps.setString(1, filmTitle.getTitleId());
+            ps.setInt(2, filmTitle.getOrdering());
+            ps.setString(3, filmTitle.getTitle());
+            ps.setString(4, filmTitle.getRegion());
+            ps.setString(5, filmTitle.getLanguage());
+            ps.setString(6, filmTitle.getTypes());
+            ps.setString(7, filmTitle.getAttributes());
+            ps.setBoolean(8, filmTitle.isOriginalTitle());
+        });
+    }
 }
