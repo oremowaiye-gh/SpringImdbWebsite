@@ -25,8 +25,10 @@ public class Main {
     @Transactional
     public void readAndSaveData() {
         try (Reader reader = new FileReader("src/main/resources/title.clean.tsv")) {
-            Iterable<CSVRecord> records = CSVFormat.TDF
+            Iterable<CSVRecord> records = CSVFormat.MONGODB_TSV
                     .withFirstRecordAsHeader()
+                    .withQuote(null)
+                    .withEscape('\\')
                     .parse(reader);
 
             int savedRows = 0;
@@ -34,7 +36,7 @@ public class Main {
             for (CSVRecord record : records) {
                 String titleId = record.get("titleId");
                 String title = record.get("title");
-                if (title == null || title.isEmpty() || title.length() <= 1 || title.equals("N/A")) {
+                if (title == null || title.contains("\"") || title.length() <= 1 || title.equals("N/A")){
                     System.out.println("Skipping row with empty title or too short title: " + record);
                     continue;
                 }
@@ -43,6 +45,7 @@ public class Main {
                     System.out.println("Skipping row with missing titleId: " + record);
                     continue;
                 }
+
 
                 if (title.length() > 255) {
                     title = title.substring(0, 255);
