@@ -1,6 +1,7 @@
 package OreMowaiye.SpringBoot;
 
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -22,22 +23,26 @@ public class Main {
         SpringApplication.run(Main.class, args);
 
     }
+
     @Transactional
     public void readAndSaveData() {
-        try (Reader reader = new FileReader("src/main/resources/title.clean.tsv")) {
-            Iterable<CSVRecord> records = CSVFormat.MONGODB_TSV
-                    .withFirstRecordAsHeader()
-                    .withQuote(null)
-                    .withEscape('\\')
-                    .parse(reader);
+        try (Reader reader = new FileReader("src/main/resources/title.clean.tsv");
+             CSVParser csvParser = new CSVParser(reader, CSVFormat.MONGODB_TSV
+                     .withFirstRecordAsHeader()
+                     .withQuote(null)
+                     .withEscape('\\'))) {
 
             int savedRows = 0;
 
-            for (CSVRecord record : records) {
+            for (CSVRecord record : csvParser) {
+                if (record.size() < 8) {
+                    System.out.println("Skipping row with wrong number of  columns: " + record);
+                    continue;
+                }
                 String titleId = record.get("titleId");
                 String title = record.get("title");
-                if (title == null || title.contains("\"") || title.length() <= 1 || title.equals("N/A")){
-                    System.out.println("Skipping row with empty title or too short title: " + record);
+                if (title == null || title.contains("\"") || title.length() <= 1 || title.equals("N/A")) {
+                    System.out.println("Skipping row with empty title, too short title, or title containing double quotes: " + record);
                     continue;
                 }
 
@@ -46,11 +51,9 @@ public class Main {
                     continue;
                 }
 
-
                 if (title.length() > 255) {
                     title = title.substring(0, 255);
                 }
-
 
                 String orderingStr = record.get("ordering");
                 int ordering = "N/A".equalsIgnoreCase(orderingStr) ? 0 : Integer.parseInt(orderingStr);
@@ -77,11 +80,12 @@ public class Main {
                 System.out.println("Saved FilmTitle: " + title);
             }
 
-
             System.out.println("Saved " + savedRows + " rows.");
         } catch (IOException e) {
             System.err.println("Error reading the file: " + e.getMessage());
         } catch (NumberFormatException e) {
             System.err.println("Error parsing ordering field: " + e.getMessage());
         }
-    }}
+    }
+
+}
