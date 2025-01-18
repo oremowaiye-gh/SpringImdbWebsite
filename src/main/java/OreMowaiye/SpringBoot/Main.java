@@ -5,6 +5,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -21,7 +22,7 @@ public class Main {
         SpringApplication.run(Main.class, args);
 
     }
-
+@Transactional
     public void readAndSaveData() {
 
 
@@ -33,9 +34,17 @@ public class Main {
             int processedRows = 0;
 
             for (CSVRecord record : records) {
+
                 String titleId = record.get("titleId");
-                int ordering = Integer.parseInt(record.get("ordering"));
                 String title = record.get("title");
+
+
+                if ((title == null || title.isEmpty()) && (titleId == null || titleId.isEmpty())) {
+                    System.out.println("Skipping row with missing title and titleId: " + record);
+                    continue;
+                }
+                int ordering = Integer.parseInt(record.get("ordering"));
+
                 String region = record.get("region");
                 String language = record.get("language");
                 String types = record.get("types");
@@ -43,8 +52,9 @@ public class Main {
                 boolean isOriginalTitle = "1".equals(record.get("isOriginalTitle"));  // 1 means true, 0 means false
 
 
-                if (!titleRepository.existsById(titleId)) {
-                    FilmTitles filmTitle = new FilmTitles(
+
+
+                FilmTitles filmTitle = new FilmTitles(
                             titleId,
                             ordering,
                             title,
@@ -53,13 +63,14 @@ public class Main {
                             types,
                             attributes,
                             isOriginalTitle
-                    );
+                );
 
-                    titleRepository.save(filmTitle);
-                    processedRows++;
-                } else {
-                    System.out.println("Skipping duplicate entry for id: " + titleId);
-                }
+                titleRepository.save(filmTitle);
+                processedRows++;
+                System.out.println("Saved FilmTitle: " + title);
+
+
+
 
                 if (processedRows >= 100) {
                     break;

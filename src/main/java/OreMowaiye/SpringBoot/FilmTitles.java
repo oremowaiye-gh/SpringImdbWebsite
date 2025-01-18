@@ -1,12 +1,19 @@
 package OreMowaiye.SpringBoot;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+
 
 @Entity
 public class FilmTitles {
 
+
     @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String titleId;
     private int ordering;
     private String title;
@@ -30,7 +37,6 @@ public class FilmTitles {
         this.attributes = attributes;
         this.isOriginalTitle = isOriginalTitle;
     }
-
 
     public String getTitleId() {
         return titleId;
@@ -98,6 +104,6 @@ public class FilmTitles {
 
     @Override
     public String toString() {
-        return String.format("Film[titleId='%s', title='%s', ordering='%d']", titleId, title, ordering);
+        return String.format("Film[id='%s' ,titleId='%s', title='%s', ordering='%d']", titleId, title, ordering);
     }
 }
