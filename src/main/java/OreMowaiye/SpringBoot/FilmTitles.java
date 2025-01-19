@@ -22,6 +22,7 @@ public class FilmTitles {
     private String types;
     private String attributes;
     private boolean isOriginalTitle;
+    private String imdbUrl;
 
 
     public FilmTitles() {}
@@ -36,6 +37,7 @@ public class FilmTitles {
         this.types = types;
         this.attributes = attributes;
         this.isOriginalTitle = isOriginalTitle;
+        this.imdbUrl = imdbUrl;
     }
 
     public String getTitleId() {
@@ -100,6 +102,11 @@ public class FilmTitles {
 
     public void setOriginalTitle(boolean isOriginalTitle) {
         this.isOriginalTitle = isOriginalTitle;
+    }
+
+
+    public String getImdbUrl() {
+        return "https://www.imdb.com/title/" + titleId + "/";
     }
 
     @Override
