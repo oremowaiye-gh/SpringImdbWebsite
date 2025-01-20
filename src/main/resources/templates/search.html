@@ -2,15 +2,27 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Search Film Titles</title>
-    <link rel="stylesheet" href="/css/style.css">
+<!--    <link rel="stylesheet" href="/css/style.css">-->
 </head>
 
 
 <h1>Search Titles</h1>
 <form action="/search" method="get">
     <input type="text" name="title" placeholder="Enter title" />
+<!--    <input type="text" name="region" placeholder="Enter region" />-->
+    <select name="region">
+        <option value="">Select By Region</option>
+        <option value="US">United States</option>
+        <option value="FR">France</option>
+        <option value="GB">United Kingdom</option>
+        <option value="DE">Germany</option>
+        <option value="IT">Italy</option>
+        <option value="JP">Japan</option>
+    </select>
     <button type="submit">Search</button>
 </form>
+
+
 <div>
     <h2> Search Results</h2>
     <table>
@@ -18,8 +30,6 @@
         <tr>
             <th>Title</th>
             <th>Region</th>
-            <th>Language</th>
-            <th>Types</th>
             <th>Read More</th>
         </tr>
         </thead>
@@ -28,8 +38,6 @@
             
             <td th:text="${film.title}">Title</td>
             <td th:text="${film.region}">Region</td>
-            <td th:text="${film.language}">Language</td>
-            <td th:text="${film.types}">Types</td>
             <td><a th:href="${film.imdbUrl}" target="_blank">IMDb Page</a></td>
 
         </tr>

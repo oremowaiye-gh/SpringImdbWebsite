@@ -30,7 +30,7 @@ public class Main {
 
     @Transactional
     public void readAndSaveData() {
-        int recordLimit = 3000000; //6000000
+        int recordLimit = 100; //6000000
         int processedCount = 0;
 
         try (Reader reader = new FileReader("src/main/resources/title.clean.tsv");
