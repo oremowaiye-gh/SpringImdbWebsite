@@ -33,7 +33,7 @@ public class Main {
         int recordLimit = 100; //6000000
         int processedCount = 0;
 
-        try (Reader reader = new FileReader("src/main/resources/title.clean.tsv");
+        try (Reader reader = new FileReader("src/main/resources/title.akas (1).tsv");
              CSVParser csvParser = new CSVParser(reader, CSVFormat.MONGODB_TSV
                      .withFirstRecordAsHeader()
                      .withQuote(null)

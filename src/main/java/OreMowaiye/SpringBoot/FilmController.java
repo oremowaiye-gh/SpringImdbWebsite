@@ -5,16 +5,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @Controller
+@SessionAttributes({"title", "region"})
 public class FilmController {
 
-    private final FilmSearch filmSearch;//    private final Map<String, String> countryToRegionMap;
+    private final FilmSearch filmSearch;
 
     @Autowired
     public FilmController(FilmSearch filmSearch) {
@@ -26,12 +27,23 @@ public class FilmController {
         return "index";
     }
 
-
     @GetMapping("/search") // http://localhost:8080/search?title=MissJerry
-    public String searchFilms(@RequestParam(required = false) String title, @RequestParam(required = false) String region, Model model) {
+    public String searchFilms(@RequestParam(required = false) String title, @RequestParam(required = false) String region, Model model, SessionStatus sessionStatus) {
         if ((title == null || title.trim().isEmpty()) && (region == null || region.trim().isEmpty())) {
             model.addAttribute("error", "Title or Region must be provided");
             return "index";
+        }
+
+        if (title != null && !title.trim().isEmpty()) {
+            model.addAttribute("title", title);
+        } else {
+            title = (String) model.getAttribute("title");
+        }
+
+        if (region != null && !region.trim().isEmpty()) {
+            model.addAttribute("region", region);
+        } else {
+            region = (String) model.getAttribute("region");
         }
 
         List<FilmTitles> results = null;
@@ -58,4 +70,5 @@ public class FilmController {
         model.addAttribute("title", title);
         model.addAttribute("region", region);
         return "search";
-    }}
+    }
+}

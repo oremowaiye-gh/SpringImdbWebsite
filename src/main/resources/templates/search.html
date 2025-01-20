@@ -2,16 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Search Film Titles</title>
-<!--    <link rel="stylesheet" href="/css/style.css">-->
+    <link rel="stylesheet" href="/css/style.css">
 </head>
-
-
+<body>
 <h1>Search Titles</h1>
 <form action="/search" method="get">
     <input type="text" name="title" placeholder="Enter title" />
-<!--    <input type="text" name="region" placeholder="Enter region" />-->
-    <select name="region">
-        <option value="">Select By Region</option>
+    <button type="submit">Search</button>
+    <div>
+        <select name="region">
+        <option value="">Filter By Region</option>
         <option value="US">United States</option>
         <option value="FR">France</option>
         <option value="GB">United Kingdom</option>
@@ -19,12 +19,10 @@
         <option value="IT">Italy</option>
         <option value="JP">Japan</option>
     </select>
-    <button type="submit">Search</button>
+    </div>
 </form>
 
-
 <div>
-    <h2> Search Results</h2>
     <table>
         <thead>
         <tr>
@@ -35,17 +33,13 @@
         </thead>
         <tbody>
         <tr th:each="film : ${results}">
-            
             <td th:text="${film.title}">Title</td>
             <td th:text="${film.region}">Region</td>
             <td><a th:href="${film.imdbUrl}" target="_blank">IMDb Page</a></td>
-
         </tr>
         </tbody>
     </table>
-    <p th:if="${#lists.isEmpty(results)}">Sorry ,we don't have this film(s) yet in our database.
-    We are working hard to make more film option available to you.</p>
-
+    <p th:if="${#lists.isEmpty(results)}">Sorry, we don't have this film(s) yet in our database. We are working hard to make more film options available to you.</p>
 </div>
 </body>
 </html>

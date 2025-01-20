@@ -1,16 +1,20 @@
 body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
-    background-color: #121212;
-    color: #e0e0e0;
+    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkgStS_0ZzhBvvIIirV3MGRsdz_F8RMIJRaA&s');
     margin: 0;
     padding: 0;
+    text-align: center;
 }
 
-h1 {
-    color: #f5c518;
+h1, h2 {
+    color:yellow;
     text-align: center;
     margin-top: 20px;
-}
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 10px;
+        border-radius: 4px;
+    }
+
 
 form {
     text-align: center;
@@ -34,8 +38,8 @@ button {
     border: none;
     border-radius: 4px;
     color: #000;
-    font-weight: bold;
     cursor: pointer;
+    font-size: 16px;
     transition: background-color 0.3s ease;
 }
 
@@ -43,22 +47,17 @@ button:hover {
     background-color: #e5b517;
 }
 
-table {
-    width: 80%;
-    margin: 20px auto;
-    border-collapse: collapse;
-    background-color: #1e1e1e;
+ul {
+    list-style-type: none;
+    padding: 0;
 }
 
-th, td {
-    padding: 15px;
-    border: 1px solid #333;
-    text-align: left;
-}
-
-th {
+li {
     background-color: #333;
-    color: #fff;
+    color: #f5c518;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 4px;
 }
 
 td a {
@@ -68,15 +67,4 @@ td a {
 
 td a:hover {
     text-decoration: underline;
-}
-
-.poster-img {
-    width: 50px;
-    height: auto;
-    border-radius: 4px;
-}
-
-p {
-    text-align: center;
-    color: #f5c518;
 }
