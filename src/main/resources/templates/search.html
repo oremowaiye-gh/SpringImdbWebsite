@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+<button onclick="window.location.href='/'">Home</button>
 <h1>Search Titles</h1>
 <form action="/search" method="get">
     <input type="text" name="title" placeholder="Enter title" />
@@ -21,6 +22,7 @@
     </select>
     </div>
 </form>
+
 
 <div>
     <table>
@@ -41,5 +43,11 @@
     </table>
     <p th:if="${#lists.isEmpty(results)}">Sorry, we don't have this film(s) yet in our database. We are working hard to make more film options available to you.</p>
 </div>
+
+<script>
+    function submitForm() {
+        document.getElementById("searchForm").submit();
+    }
+</script>
 </body>
 </html>
