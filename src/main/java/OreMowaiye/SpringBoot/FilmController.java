@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,8 +31,8 @@ public class FilmController {
     @GetMapping("/search") // http://localhost:8080/search?title=MissJerry
     public String searchFilms(@RequestParam(required = false) String title, @RequestParam(required = false) String region, Model model, SessionStatus sessionStatus) {
         if ((title == null || title.trim().isEmpty()) && (region == null || region.trim().isEmpty())) {
-            model.addAttribute("error", "Title or Region must be provided");
-            return "index";
+            model.addAttribute("error", "Title must be provided");
+            return "search";
         }
 
         if (title != null && !title.trim().isEmpty()) {

@@ -70,12 +70,6 @@ td a:hover {
     text-decoration: underline;
 }
 
-.poster-img {
-    width: 50px;
-    height: auto;
-    border-radius: 4px;
-}
-
 p {
     text-align: center;
     color: #f5c518;

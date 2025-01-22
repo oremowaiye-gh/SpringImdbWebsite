@@ -25,6 +25,7 @@ public class FilmTitles {
     private String imdbUrl;
 
 
+
     public FilmTitles() {}
 
 
@@ -113,4 +114,5 @@ public class FilmTitles {
     public String toString() {
         return String.format("Film[id='%s' ,titleId='%s', title='%s', ordering='%d']", titleId, title, ordering);
     }
+
 }

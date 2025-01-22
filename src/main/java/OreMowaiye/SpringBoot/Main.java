@@ -30,9 +30,10 @@ public class Main {
 
     @Transactional
     public void readAndSaveData() {
-        int recordLimit = 100; //6000000
+        int recordLimit = 100000; //6000000
         int processedCount = 0;
 
+    //TODO - Do not hardcode the file path
         try (Reader reader = new FileReader("src/main/resources/title.akas (1).tsv");
              CSVParser csvParser = new CSVParser(reader, CSVFormat.MONGODB_TSV
                      .withFirstRecordAsHeader()
@@ -51,7 +52,7 @@ public class Main {
                 }
                 String titleId = record.get("titleId");
                 String title = record.get("title");
-                if (title == null || title.contains("\"") || title.length() <= 1 || title.equals("N/A")) {
+                if (title == null||title.isEmpty() || title.contains("\"") || title.length() <= 1 || title.equals("N/A")) {
                     System.out.println("Skipping row with empty title, too short title: " + record);
                     continue;
                 }
