@@ -1,5 +1,6 @@
-package OreMowaiye.SpringBoot;
+package OreMowaiye.SpringBoot.Repository;
 
+import OreMowaiye.SpringBoot.Entity.FilmTitles;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package OreMowaiye.SpringBoot;
+package OreMowaiye.SpringBoot.Entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

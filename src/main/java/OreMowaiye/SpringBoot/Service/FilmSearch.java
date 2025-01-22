@@ -1,5 +1,7 @@
-package OreMowaiye.SpringBoot;
+package OreMowaiye.SpringBoot.Service;
 
+import OreMowaiye.SpringBoot.Entity.FilmTitles;
+import OreMowaiye.SpringBoot.Repository.TitleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

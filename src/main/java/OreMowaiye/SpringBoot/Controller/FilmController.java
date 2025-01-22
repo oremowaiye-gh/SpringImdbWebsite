@@ -1,5 +1,7 @@
-package OreMowaiye.SpringBoot;
+package OreMowaiye.SpringBoot.Controller;
 
+import OreMowaiye.SpringBoot.Service.FilmSearch;
+import OreMowaiye.SpringBoot.Entity.FilmTitles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

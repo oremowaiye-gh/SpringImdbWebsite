@@ -33,16 +33,18 @@ This is a Spring Boot application for searching film titles by title and region.
    git clone https://github.com/oremowaiye/film-search.git
    cd film-search
 
+
 ### Database Setup
 
 1. **Prepare the Database File**:
-    - Ensure you have the TSV file containing the film data. The file should be named `title.akas (2).tsv` and placed in the `src/main/resources/` directory.
+    - Download TSV dataset from IMDb website :- https://datasets.imdbws.com/title.akas.tsv.gz and extract the file to `src/main/resources/` directory.
+    - Ensure you have the TSV file and it should be renamed `title.akas (2).tsv`.
 
 2. **Update the Database Configuration**:
 -
    Open the `src/main/resources/application.properties` file and update the database connection details:
      ```
-  spring.datasource.url=jdbc:h2:mem:testdb
+    spring.datasource.url=jdbc:h2:mem:testdb
     spring.datasource.driverClassName=org.h2.Driver
     spring.datasource.username=sa
     spring.datasource.password=
@@ -63,7 +65,7 @@ This is a Spring Boot application for searching film titles by title and region.
     - The application will read the `title.akas (2).tsv` file and load the data into the database upon startup. You can verify the data by querying the database.
 
 ### Configuration
-You can change the limit of records processed by modifying the `recordLimit` variable in the `readAndSaveData` method of the `Main` class. Here is the relevant part of the code:
+You can change the limit of records processed by modifying the `recordLimit` variable in the `readAndSaveData` method of the `DataLoaderService` class. Here is the relevant part of the code:
 
 ```java
 public void readAndSaveData() {
@@ -75,15 +77,15 @@ public void readAndSaveData() {
 
 
 ```
-###Images
-
-# Home Page
+# Images
+## Home Page
 ![HomePage](src/main/resources/Images/HomePage.png)
 
 
-# Search Results
+## Search Results
 ![SearchTitle](src/main/resources/Images/SearchTitle.png)
 
 
-# Filter By Region
+## Filter By Region
+
 ![FilterByRegion](src/main/resources/Images/FilterByRegion.png)
