@@ -39,18 +39,19 @@ This is a Spring Boot application for searching film titles by title and region.
     - Ensure you have the TSV file containing the film data. The file should be named `title.akas (2).tsv` and placed in the `src/main/resources/` directory.
 
 2. **Update the Database Configuration**:
-    - Open the `src/main/resources/application.properties` file and update the database connection details:
-      ```properties
-   spring.datasource.url=jdbc:h2:mem:testdb
-   spring.datasource.driverClassName=org.h2.Driver
-   spring.datasource.username=sa
-   spring.datasource.password=
-   spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
-   spring.h2.console.enabled=true
-   spring.jpa.properties.hibernate.jdbc.batch_size=300
-   spring.jpa.properties.hibernate.order_inserts=true
-   spring.jpa.properties.hibernate.flush.mode=COMMIT
-      ```
+-
+   Open the `src/main/resources/application.properties` file and update the database connection details:
+     ```
+  spring.datasource.url=jdbc:h2:mem:testdb
+    spring.datasource.driverClassName=org.h2.Driver
+    spring.datasource.username=sa
+    spring.datasource.password=
+    spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+    spring.h2.console.enabled=true
+    spring.jpa.properties.hibernate.jdbc.batch_size=300
+    spring.jpa.properties.hibernate.order_inserts=true
+    spring.jpa.properties.hibernate.flush.mode=COMMIT
+    ```
 3. **Run the Application**:
     - Build and run the application using Maven:
       ```sh
