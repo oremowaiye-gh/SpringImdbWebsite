@@ -79,12 +79,11 @@ public void readAndSaveData() {
 
 # Home Page
 ![HomePage](src/main/resources/Images/HomePage.png)
- #Path: src/main/resources/Images/HomePage.png
+
 
 # Search Results
 ![SearchTitle](src/main/resources/Images/SearchTitle.png)
-#Path: src/main/resources/Images/SearchTitle.png
+
 
 # Filter By Region
 ![FilterByRegion](src/main/resources/Images/FilterByRegion.png)
- #Path: src/main/resources/Images/FilterByRegion.png
